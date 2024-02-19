@@ -1,0 +1,24 @@
+# (c) Copyright 2024 Hewlett Packard Enterprise Development LP
+name: CI
+
+on:
+  pull_request: # By default, trigerred when the PR is "opened" or "reopened" or "synchronize (new commits are pushed)"
+  push:
+    branches: ["main"]
+
+concurrency:
+  # Only allows one build per workflow & branch/PR/tag
+  # cancels in-progress builds for that branch/PR/tag if a new one is submitted.
+  # https://docs.github.com/en/actions/using-jobs/using-concurrency
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compliance:
+    # for docs on configuring the secrets-scanner visit its repo https://github.com/hpe-actions/secrets-scanner/
+    # for docs on configuring the copyright tool visit its repo https://github.com/hpe-actions/copyright/
+    uses: hpe-cds/reusable-workflows/.github/workflows/ci-compliance.yml@main
+
+  ci:
+    uses: hpe-cds/reusable-workflows/.github/workflows/ci-ui-component.yml@main
+    secrets: inherit

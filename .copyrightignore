@@ -1,0 +1,6 @@
+CODEOWNERS
+.npmrc
+.gitignore
+.editorconfig
+.prettierignore
+readme.md
